@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:list/NameModel.dart';
 
-
-
 class listview extends StatefulWidget {
   const listview({Key? key}) : super(key: key);
 
@@ -11,7 +9,6 @@ class listview extends StatefulWidget {
 }
 
 class _listviewState extends State<listview> {
-
   List<NameModel> data = [
     NameModel("Adhanafi Ilyas", "AI", "Pengembang Perangkat Lunak Dan Gim"),
     NameModel("Ahmad Aziz", "AA", "Pengembang Perangkat Lunak Dan Gim"),
@@ -33,7 +30,7 @@ class _listviewState extends State<listview> {
     NameModel("Hibatullah Fawwaz", "HF", "Pengembang Perangkat Lunak Dan Gim"),
   ];
 
-  Widget avatar(int index){
+  Widget avatar(int index) {
     return CircleAvatar(
       radius: 24,
       child: Text(
@@ -42,8 +39,10 @@ class _listviewState extends State<listview> {
       ),
     );
   }
-  Widget textData(int index){
-    return Expanded(child: Container(
+
+  Widget textData(int index) {
+    return Expanded(
+        child: Container(
       margin: EdgeInsets.only(left: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -51,8 +50,7 @@ class _listviewState extends State<listview> {
         children: <Widget>[
           Text(
             data[index].name,
-            style: TextStyle(fontSize: 16,
-                fontWeight: FontWeight.w600),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           ),
           Container(
             margin: EdgeInsets.only(top: 2),
@@ -66,19 +64,36 @@ class _listviewState extends State<listview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Listview"),),
+      // appBar: AppBar(title: Text("Listview"),),
       body: ListView.builder(
         padding: EdgeInsets.all(5),
         itemCount: data.length,
         itemBuilder: (buildContext, index) {
           return GestureDetector(
-            onTap: (){
-              //snackbar
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text("${data[index].name}"),
-                  duration: Duration(seconds: 2),
-                ));
-            },
+            onTap: () => showDialog(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                      title: Text("Hapus Kontak"),
+                      content: Text(
+                          "Anda yakin ingin menghapus kontak ${data[index].name}?"),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text("Ya"),
+                          onPressed: () {
+                            setState(() {
+                              data.removeAt(index);
+                            });
+                            Navigator.pop(context);
+                          },
+                        ),
+                        FlatButton(
+                          child: Text("Tidak"),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    )),
             child: Container(
               margin: EdgeInsets.all(10),
               child: Row(
@@ -95,10 +110,3 @@ class _listviewState extends State<listview> {
     );
   }
 }
-
-
-
-
-
-
-
